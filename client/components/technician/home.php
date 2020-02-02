@@ -9,6 +9,7 @@
           <th>Name</th>
           <th>Serial Number</th>
           <th>Brand</th>
+          <th>Filter</th>
           <th>Problem</th>
           <th style="text-align: center;">Status</th>
         </tr>
@@ -26,10 +27,11 @@
             $x += 1;
         ?>
           <tr>
-            <td> <?= $x ?></td>
+            <td> PN-<?= $row['id'] ?></td>
             <td> <?= $row['FirstName'] . ' ' . $row['LastName'] ?></td>
             <td> <?= $row['serialNumber'] ?></td>
             <td> <?= $row['brand'] ?></td>
+            <td> <?= $row['filter'] ?></td>
             <td> <?= $row['problem'] ?></td>
             <td> 
               <center>
@@ -95,7 +97,8 @@
               ?>
             </div>
           </div>
-          <small class="feedback-problem"><em><?= $row1['problem'] ?></em></small>
+          <img src="/phonetech/server/uploads/<?= $row1['photo']; ?>" style="display: <?= $row1['photo'] != '' ? 'block': 'none'; ?>" alt="..." class="img-thumbnail">
+          <small class="feedback-problem"><em>(PN-<?= $row1['id'] ?>) - <?= $row1['problem'] ?></em></small>
           <p class="list-group-item-text"><?= $row1['comment'] ?></p>
         </a>
         <?php } 

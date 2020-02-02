@@ -37,7 +37,7 @@
   <div id="image-header">
     <div class="header-text-img">
       <h2>PhoneTech: An Online Technician <br> &nbsp &nbsp Finder In Zamboanga City</h2>
-      <center><a href="customer/server/registercustomer.php"><button class="btn" id="getstarted">Get Started</button></a></center>
+      <center><a href="registration.php"><button class="btn" id="getstarted">Get Started</button></a></center>
     </div>
     <img src="client/assets/img/homeimage.jpg" id="homei">
   </div>
@@ -82,57 +82,53 @@
 
     <!-- <img src="client/assets/img/techicon.png" id="icon1"> -->
     <div class="tech-user-container">
-      <div class="user-container">
-        <div class="circle-user">
-          <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-        </div>
-  
-        <p class="tech-name">Renzo Abel A. Codilla</p>
-        <p class="tech-position">IOS / ANDROID DEVELOPER</p>
-        <div class="rate">
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
 
+      <?php 
+        $conn= new mysqli("localhost", "root","","phonetech_db");
+        $query= "SELECT a.Customer_ID, a.FirstName, a.LastName, a.photo, AVG(c.rating) as rating FROM customer_account a LEFT OUTER JOIN problem_tb b ON a.Customer_ID = b.tech_id LEFT OUTER JOIN rating_tb c ON b.id = c.problem_id WHERE a.type != 'Administrator' GROUP BY a.Customer_ID ORDER BY rating DESC LIMIT 3";
+        $res=$conn->query($query);
+        $x1 = 0;
+        while($row=$res->fetch_assoc()){
+          $x1 += 1;
+          $hasPhoto = $row['photo'] != null && $row['photo'] != '';
+      ?>
+        <div class="user-container">
+          <div class="circle-user" style="display: <?= $hasPhoto ? 'none' : 'block'; ?>">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+          </div>
+          <img id="tech-photo" src="server/uploads/<?= $row['photo']; ?>" class="rounded mx-auto d-block" style="display: <?= $hasPhoto ? 'block' : 'none'; ?>; margin-left: 20px;">
+          
+          <p class="tech-name"><?= $row['FirstName'] . ' ' . $row['LastName'] ?></p>
+          <div class="rate">
+              <?php 
+                for ($y = 1; $y <= 5; $y++) {
+                  if ($y <= intval($row['rating'])) {
+                    if ($y == intval($row['rating'])) {
+                      if ($y < $row['rating']) {
+                        echo "<span class='fa fa-star-half-o checked'></span>";
+                      } else {
+                        echo "<span class='fa fa-star checked'></span>";
+                      }
+                    } else {
+                      echo "<span class='fa fa-star checked'></span>";
+                    }
+                  } else {
+                    echo "<span class='fa fa-star-o'></span>";
+                  }
+                }
+              ?>
+            </div>
         </div>
-      </div>
-
-      <div class="user-container">
-        <div class="circle-user">
-          <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-        </div>
-        
-        <p class="tech-name">Renzo Abel A. Codilla</p>
-        <p class="tech-position">IOS / ANDROID DEVELOPER</p>
-        <div class="rate">
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star"></span>
-        </div>
-      </div>
-
-      <div class="user-container">
-        <div class="circle-user">
-          <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-        </div>
-        
-        <p class="tech-name">Renzo Abel A. Codilla</p>
-        <p class="tech-position">IOS / ANDROID DEVELOPER</p>
-        <div class="rate">
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star checked"></span>
-          <span class="fa fa-star"></span>
-          <span class="fa fa-star"></span>
-        </div>
-      </div>
+      <?php } 
+        if($x1 == 0 ){
+        ?>
+          <h2>-- No Data --</h2>
+      <?php } ?>
     </div>
 
-    <a href="client/components/technician/technicians.php"><button class="btn" id="viewalltech">View All Technician</button></a>
+    <?php if($x1 != 0 ){ ?>
+          <a href="technicians.php"><button class="btn" id="viewalltech">View All Technician</button></a>
+    <?php } ?>
   </div>
 
   <div class="footer">

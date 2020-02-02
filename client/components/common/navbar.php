@@ -17,7 +17,7 @@
         <li id="home-link" class="active"><a href="index.php">Home <span class="sr-only">(current)</span></a></li>
         <?php if (isset($_SESSION['type']) && !empty($_SESSION['type'])) {?>
           <?php if ($_SESSION['type'] === 'Technician') {?>
-            <li><a href="#problemlist">Problem List</a></li>
+            <li><a href="/phonetech/dashboard.php?s=s#problemlist">Problem List</a></li>
           <?php } elseif ($_SESSION['type'] === 'Customer') { ?>
             <li id="technicianbid-link"><a href="#technicianbid">Technician Bid</a></li>
           <?php } else { ?>
@@ -25,7 +25,7 @@
           <?php } ?>
         <?php } else { ?>
           <li><a href="#">About Us</a></li>
-          <li><a href="#">Technicians</a></li>
+          <li><a href="technicians.php">Technicians</a></li>
         <?php } ?>
       </ul>
     </div>

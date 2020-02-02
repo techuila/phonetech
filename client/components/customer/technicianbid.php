@@ -28,7 +28,7 @@
             }
           }
       ?>
-        <option value="<?=$row2['id']?>" data-name="<?=$row2['FirstName'] . ' ' . $row2['LastName']?>" data-contactNumber="<?= $row2['ContactNumber'] ?>" data-problem="<?=$row2['problem']?>"> <?=$row2['brand']?> | <?=$row2['serialNumber']?> </option>
+        <option value="<?=$row2['id']?>" data-name="<?=$row2['FirstName'] . ' ' . $row2['LastName']?>" data-contactNumber="<?= $row2['ContactNumber'] ?>" data-filter="<?=$row2['filter']?>" data-problem="<?=$row2['problem']?>"> <?=$row2['brand']?> | <?=$row2['serialNumber']?> </option>
       <?php } ?>
     </select>
   </div>
@@ -41,12 +41,13 @@
           <th scope="col">ID</th>
           <th scope="col">Payment Breakdown</th>
           <th scope="col" style="text-align: center;">Days To Repair</th>
-          <th scope="col"style="text-align: right;">Date (Placed bid)</th>
+          <th scope="col"style="text-align: right;">Expected Date to Finish</th>
           <th scope="col" style="text-align: center;">Action</th>
         </tr>
       </thead>
       <tbody>
         <?php
+          // SORT BID BY TOP SUGGESTION ((SUM(x.price) * a.repairdays) / 2)
           setlocale(LC_MONETARY, 'en_US');
           $conn = new mysqli("localhost", "root", "", "phonetech_db");
           $sql = "SELECT a.*,b.tech_id as techs_id,b.status as prob_status, ((SUM(x.price) * a.repairdays) / 2) as ave FROM bid_tb a INNER JOIN problem_tb b ON a.problem_id = b.id INNER JOIN payment_breakdown x ON x.bid_id = a.id WHERE a.problem_id = " . htmlspecialchars($_GET["problem_id"]) . " GROUP BY a.id ORDER BY ave ASC;";
@@ -89,7 +90,13 @@
                 <span style="visibility: hidden;"><?= $total; ?></span>
               </td>
               <td style="text-align: center;"> <?=$row['repairdays']?></td>
-              <td style="text-align: right;"> <?=$row['currentdate']?></td>
+              <td style="text-align: right;"> 
+                <?php
+                  $today = new DateTime();
+                  date_add($today, date_interval_create_from_date_string($row['repairdays']. ' days'));
+                  echo date_format($today,"Y-m-d");
+                ?>
+              </td>
               <td>
                 <center>
                   <button title="Select this bid" data-toggle="modal" data-target="#confirmModal" type="button" class="btn btn-sm btn-primary" aria-label="Left Align" onclick='selectBid(<?php echo json_encode($row); ?>)'>
@@ -111,6 +118,7 @@
       </tbody>
     </table>
   <?php } elseif ($status != '') {?>
+    <span><b>Filter: </b></span> <span id="filter-label"></span><br /><br />
     <span><b>Problem: </b></span> <span id="problem-label"></span><br /><br />
     <span><b>Technician Name: </b></span> <span id="technician-name"></span><br /><br />
     <span><b>Contact Number: </b></span> +<span id="technician-contact"></span><br /><br />
@@ -138,8 +146,13 @@
             <span id="rate-4" data-rate="4" class="fa fa-star"></span>
             <span id="rate-5" data-rate="5" class="fa fa-star"></span>
           </div>
-          <input style="display: none; height: 0;" type="text" class="form-control" name="rating" id="rating">
+          <input style="display: none; height: 0;" value="3" type="text" class="form-control" name="rating" id="rating">
           <input style="display: none; height: 0;" value="<?php echo htmlspecialchars($_GET["problem_id"]); ?>" type="text" class="form-control" name="problem_id" id="problem_id">
+        </div>
+
+        <div class="form-group" style="text-align: center;">
+          <label for="exampleFormControlFile1">Upload Photo (Optional)</label>
+          <input type="file" name="photo" class="form-control-file" id="exampleFormControlFile1">
         </div>
 
         <div class="form-group">
@@ -149,7 +162,7 @@
 
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
-  <?php } else { echo '<div class="vertical-center"><label>Your feedback has been sent!</label></div>'; } 
+  <?php } elseif ($status == 'Finished' && $haveFeedback) { echo '<div class="vertical-center"><label>Your feedback has been sent!</label></div>'; } 
     }?>
 </div>
 
@@ -181,6 +194,17 @@
                   <div class="input-group">
                     <span class="input-group-addon" id="sizing-addon2">Serial Number</span>
                     <input type="text" class="form-control" placeholder="Enter Your Mobile Phone's Serian Number" name="serialNumber" id="serialNumber" required>
+                  </div>
+                </div>
+
+                <div class="col-xs-12">
+                  <div class="input-group">
+                    <span class="input-group-addon" id="sizing-addon2">Filter</span>
+                    <select class="form-control" id="filter" name="filter">
+                      <option value="None" selected>Other Specific Problem</option>
+                      <option value="LCD">LCD</option>
+                      <option value="Motherboard">Motherboard</option>
+                    </select>
                   </div>
                 </div>
 

@@ -34,11 +34,20 @@
       const problem_id = window.location.search.substr(1).split('=')[1]; // Get problem_id search params
       let phoneSelect = $(`#phone-select option[value='${problem_id}']`);
       phoneSelect.attr('selected', true) // Select value of phone based on search params
+      $('#filter-label').text(phoneSelect.attr("data-filter")) // Display problem based on selected phone (data-problem attribute)
       $('#problem-label').text(phoneSelect.attr("data-problem")) // Display problem based on selected phone (data-problem attribute)
       $('#technician-name').text(phoneSelect.attr("data-name")) // Display problem based on selected phone (data-problem attribute)
       $('#technician-contact').text(phoneSelect.attr("data-contactNumber")) // Display problem based on selected phone (data-problem attribute)
 
-      console.log(phoneSelect.attr("data-contactNumber"))
+      $('#filter').on('change', function () {
+        if (this.value == 'None') {
+          $('#problem').attr('disabled', false)
+          $('#problem').val('')
+        } else {
+          $('#problem').val(this.value)
+          $('#problem').attr('disabled', true)
+        }
+      })
 
       $(window).on('hashchange', function() {
         // If page is switched, execute switchPage() function
@@ -94,17 +103,27 @@
 
     function submitFeedback() {
       const formData = new FormData(document.forms.namedItem('form-rating'))
-      let payload = {};
-      formData.forEach((value,key) => payload[key] = value)
+      formData.append('SubmitFeedback', null);
 
-      $.post('/phonetech/server/customerserver.php', { ...payload, SubmitFeedback: null }, (result) => {
-        result = JSON.parse(result)
-        if(result.success) {
-          alert('Successfully selected bid!');
-          window.location.reload(true);
-        } else {
-          alert(result.msg);
-          console.log(result.msg)
+      $.ajax({
+        url: '/phonetech/server/customerserver.php',
+        dataType: 'JSON',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(result){
+          console.log(result)
+          if(result.success) {
+            alert('Successfully submitted feedback!');
+            window.location.reload(true);
+          } else {
+            alert(result.msg);
+            console.log(result.msg)
+          }
+        },
+        error: function(a,b,c){
+          console.log('Error: ' + a +  ' ' + b + ' ' + c);
         }
       });
     }
@@ -113,7 +132,7 @@
       console.log(row)
       $('#problem_id').val(row.problem_id); 
       $('#tech_id').val(row.tech_id); 
-      $('#status').val('Pending'); 
+      $('#status').val('In Progress'); 
     }
 
     function submitBid() {

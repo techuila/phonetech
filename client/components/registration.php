@@ -19,10 +19,24 @@
 <center><h1>Register Now!</h1></center>
 
 <br>
+<form id="photo-form" name="choosePhoto" enctype="multipart/form-data">
+  <input id="photo-file" name="file" type="file">
+</form>
+<form method="post" action="/phonetech/registration.php" style="border:1px solid #ccc" enctype="multipart/form-data">
+  <input style="visibility: hidden; height: 0;position: absolute;" type="text" class="form-control" name="photo" id="invi-photo">
 
-<form method="post" action="/phonetech/registration.php" style="border:1px solid #ccc">
   <div id="registration-form" class="container">
     <?php include getcwd() . '/client/components/common/errorsreg.php'?>
+
+    <div id="tech-photo-container" class="tech-user-container techy">
+      <div class="user-container">
+        <div class="circle-user" onclick="document.getElementById('photo-file').click();">
+          <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+        </div>
+      </div>
+      <img id="tech-photo" src="" onclick="document.getElementById('photo-file').click();" class="rounded mx-auto d-block">
+      <br />
+    </div>
 
     <div class="input-group">
       <span class="input-group-addon" id="sizing-addon2">First Name</span>
@@ -64,6 +78,11 @@
       <input type="text" class="form-control" placeholder="Enter Address" name="Address" required>
     </div>
 
+    <div id="custom-file" class="form-group">
+      <label for="exampleFormControlFile1">Upload Certificate</label>
+      <input type="file" name="certificate" class="form-control-file" id="exampleFormControlFile1">
+    </div>
+
     <div class="user-type">
       <input type="radio" name="type" value="Customer" checked> Customer
       <input type="radio" name="type" value="Technician"> Technician
@@ -79,6 +98,43 @@
 <script>
 // When the user scrolls down 80px from the top of the document, resize the navbar's padding and the logo's font size
 window.onscroll = function() {scrollFunction()};
+$(document).on('change', '.user-type input[type="radio"]', function (event) {
+  if (event.target.value === 'Technician') {
+    $('#tech-photo-container').css('display', 'flex');
+    $('#custom-file').css('display', 'block');
+  } else {
+    $('#tech-photo-container').css('display', 'none');
+    $('#custom-file').css('display', 'none');
+  }
+})
+
+$(document).on('change', '#photo-file', function () {
+  var formData = new FormData(document.forms.namedItem('choosePhoto'));
+  var f = $('#photo-file').val().replace(/.*[\/\\]/, '');
+  $.ajax({
+      url: '/phonetech/server/movePhoto.php',
+      dataType: 'JSON',
+      type: 'POST',
+      data: formData,
+      contentType: false, 
+      processData: false,
+      success: function(result){
+        if (result.success) {
+          $('#invi-photo').val(f)
+
+          $('#tech-photo').css('display', 'initial');
+          $('#tech-photo-container .user-container').css('display', 'none');
+          $('#tech-photo').attr('src','/phonetech/server/uploads/'+f);
+        } else {
+          $('#tech-photo').css('display', 'none');
+          $('#tech-photo-container .user-container').css('display', 'initial');
+        }
+      },
+      error: function(a,b,c){
+          console.log("Error: " + a + " " + b + " " + c);
+      }
+  });
+})
 
 function scrollFunction() {
   if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {

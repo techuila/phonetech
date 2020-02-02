@@ -9,6 +9,7 @@
         <th>Name</th>
         <th>Serial Number</th>
         <th>Brand</th>
+        <th>Filter</th>
         <th>Problem</th>
         <th>Date</th>
         <th style="text-align: center;">Status</th>
@@ -33,6 +34,7 @@
           <td> <?= $row['FirstName'] . ' ' . $row['LastName'] ?></td>
           <td> <?= $row['serialNumber'] ?></td>
           <td> <?= $row['brand'] ?></td>
+          <td> <?= $row['filter'] ?></td>
           <td> <?= $row['problem'] ?></td>
           <td> <?= $row['currentdate'] ?></td>
           <td> 

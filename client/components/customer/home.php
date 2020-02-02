@@ -8,6 +8,7 @@
           <th>ID</th>
           <th>Serial Number</th>
           <th>Brand</th>
+          <th>Filter</th>
           <th>Problem</th>
           <th style="text-align: center;">Status</th>
           <th>Technician Name</th>
@@ -26,9 +27,10 @@
             $x += 1;
         ?>
           <tr class="clickable-row" onclick='lookProblem(<?php echo $row["id"]; ?>)'>
-            <td> PR-<?= $row['id'] ?></td>
+            <td> PN-<?= $row['id'] ?></td>
             <td> <?= $row['serialNumber'] ?></td>
             <td> <?= $row['brand'] ?></td>
+            <td> <?= $row['filter'] ?></td>
             <td> <?= $row['problem'] ?></td>
             <td style="text-align: center;">  
               <?php

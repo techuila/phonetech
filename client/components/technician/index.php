@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="client/assets/css/app.css">
 </head>
 <body>
+  
   <!-- Navigation bar -->
   <?php include 'client/components/common/navbar.php' ?>
   
@@ -86,12 +87,12 @@
       $('#summary-table').DataTable({
         "paging": false,
         "info": false,
-        "order": [[ 5, "asc" ]],
+        "order": [[ 6, "asc" ]],
       });
 
       $('#problem-table').DataTable({
         "paging": false,
-        "order": [[ 6, "asc" ], [ 5, "desc" ]],
+        "order": [[ 7, "asc" ], [ 6, "desc" ]],
         "columnDefs": [
           {
             "width": "5%", 

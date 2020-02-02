@@ -15,7 +15,7 @@
   <!-- Navigation bar -->
   <?php include 'client/components/common/navbar.php' ?>
 
-  <div class="container">
+  <div class="container-c">
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -29,17 +29,19 @@
           <th scope="col">Contact Number</th>
           <th scope="col">Address</th>
           <th scope="col">Status</th>
+          <th scope="col">Certificate</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
         <?php 
           $index = 0;
-          $results = fetchAll("SELECT * FROM customer_account WHERE type != 'Administrator';");
+          $results = fetchAll("SELECT * FROM customer_account WHERE type NOT IN  ('Administrator', 'Customer');");
           // echo $results[0]['FirstName'];
           // echo '<pre>'; print_r($results); echo '</pre>';
           foreach ($results as $key => $result) {
             $index += 1;
+            $filename = $result['certificate'];
         ?>
           <tr>
             <th scope="row"><?php echo  $index; ?></th>
@@ -49,12 +51,13 @@
             <td><?php echo $result['Username']; ?></td>
             <td class="user-pass"><?php echo $result['Password']; ?></td>
             <td><?php echo $result['type']; ?></td>
-            <td><?php echo '(+63) '.$result['ContactNumber']; ?></td>
+            <td><?php echo '+' . $result['ContactNumber']; ?></td>
             <td><?php echo $result['Address']; ?></td>
             <td><?php echo $result['status']; ?></td>
+            <td><a href="#" data-toggle="modal" data-target="#image-viewer" onclick="displayImage('<?= $filename; ?>')"><?php echo $filename; ?></a></td>
             <td>
               <center>
-                <?php if (in_array($result['status'], array("Pending", "Inactive"))) { ?>
+                <!-- <?php if (in_array($result['status'], array("Pending", "Inactive"))) { ?>
                   <button data-toggle="tooltip" title="Activate Account" type="button" class="btn btn-sm btn-primary" aria-label="Left Align" onclick="changeStatus(<?php echo $result['Customer_ID']; ?>, 'Active')">
                     <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
                   </button>
@@ -62,17 +65,22 @@
                   <button data-toggle="tooltip" title="Disable Account" type="button" class="btn btn-sm btn-danger" aria-label="Left Align" onclick="changeStatus(<?php echo $result['Customer_ID']; ?>, 'Inactive')">
                     <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
                   </button>
-                <?php } ?>
+                <?php } ?> -->
+
+                <?php if ($result['status'] == 'Pending') { ?>
+                  <input type="button" class="btn btn-danger" name="status" value="Decline" onclick="changeStatus(<?php echo $result['Customer_ID']; ?>, 'Inactive')">
+                  <input type="button" class="btn btn-success" name="status" value="Accept" onclick="changeStatus(<?php echo $result['Customer_ID']; ?>, 'Active')">
 
                 <!-- onclick='editAccount(<?php echo json_encode($result); ?>)' -->
                 <!-- <button type="button" title="Edit Account" type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editModal" onclick='selectUser(<?php echo json_encode($result); ?>)'>
                   <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                 </button> -->
+                <?php } ?>
                 </center>
             </td>
           </tr>
         <?php }
-          if ($x === 0) {
+          if ($index === 0) {
         ?>
           <tr>
             <td colspan="8" style="text-align: center; padding: 30px 0; ">
@@ -84,6 +92,20 @@
       </tbody>
     </table>
   </div>
+
+  <div class="modal fade" id="image-viewer" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <img id="img-view" src="" width="100%" class="rounded mx-auto d-block" alt="Responsive image">
+        </div>
+      </div>
+    </div>
+
 
   <div class="container" style="padding: 0;">
     <!-- Modal -->
@@ -183,6 +205,11 @@
   </div>
 
   <script type="text/javascript">
+    function displayImage(filename) {
+      console.log(filename)
+      $('#img-view').attr('src','/phonetech/server/uploads/'+filename);
+    }
+
     function hidePass() {
       if (!$("#change-pass").is(':checked')) {
         $("input").attr("required", false);
@@ -197,6 +224,11 @@
       $.post('/phonetech/server/customerserver.php', { id, status, ChangeStatus: null }, (result) => {
         result = JSON.parse(result)
         if(result.success) {
+          if (status == 'Inactive') {
+            alert('Successfully Declined Request!')
+          } else {
+            alert('Successfully Accepted Request!')
+          }
           window.location = 'index.php'
         } else {
           alert('Error upon changing status. Check console.log for error details.');
