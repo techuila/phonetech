@@ -1,7 +1,8 @@
 repo_name: techuila/phonetech
 report_id: 1d4339978eb1035a3402894609376eb4
+version: 0.1
 repo_type: Public
-timestamp: '2023-11-15T06:31:25+00:00'
+timestamp: '2024-01-05T08:41:35+00:00'
 requested_by: techuila
 provider: github
 branch: master
@@ -15,6 +16,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/6727/css.png
+  detection_source_url: https://github.com/techuila/phonetech
   detection_source: Repo Metadata
 - name: JavaScript
   description: Lightweight, interpreted, object-oriented language with first-class
@@ -25,6 +27,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/1209/javascript.jpeg
+  detection_source_url: https://github.com/techuila/phonetech
   detection_source: Repo Metadata
 - name: PHP
   description: A popular general-purpose scripting language that is especially suited
@@ -35,6 +38,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/991/hwUcGZ41_400x400.jpg
+  detection_source_url: https://github.com/techuila/phonetech
   detection_source: Repo Metadata
 - name: SQL
   description: It is a domain-specific language used in programming
@@ -44,6 +48,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/2271/default_068d33483bba6b81ee13fbd4dc7aab9780896a54.png
+  detection_source_url: https://github.com/techuila/phonetech/blob/master/phonetech_db.sql
   detection_source: phonetech_db.sql
   last_updated_by: Techuila
   last_updated_on: 2020-01-23 12:11:51.000000000 Z
@@ -57,7 +62,8 @@ tools:
   category: Languages & Frameworks
   sub_category: Microframeworks (Backend)
   image_url: https://img.stackshare.io/service/2350/638632.png
-  detection_source: server/vendor/php-http/guzzle6-adapter/composer.json
+  detection_source_url: https://github.com/techuila/phonetech/blob/master/client/assets/js/vendor/php-http/guzzle6-adapter/composer.json
+  detection_source: client/assets/js/vendor/php-http/guzzle6-adapter/composer.json
   last_updated_by: Techuila
   last_updated_on: 2020-01-23 12:11:51.000000000 Z
 - name: Composer
@@ -69,7 +75,8 @@ tools:
   category: Build, Test, Deploy
   sub_category: Package Managers
   image_url: https://img.stackshare.io/service/1688/New_Project__65_.png
-  detection_source: server/vendor/guzzlehttp/guzzle/Dockerfile
+  detection_source_url: https://github.com/techuila/phonetech/blob/master/client/assets/js/vendor/guzzlehttp/guzzle/Dockerfile
+  detection_source: client/assets/js/vendor/guzzlehttp/guzzle/Dockerfile
   last_updated_by: Techuila
   last_updated_on: 2020-01-23 12:11:51.000000000 Z
 - name: Docker
@@ -81,7 +88,8 @@ tools:
   category: Build, Test, Deploy
   sub_category: Virtual Machine Platforms & Containers
   image_url: https://img.stackshare.io/service/586/n4u37v9t_400x400.png
-  detection_source: server/vendor/guzzlehttp/guzzle/Dockerfile
+  detection_source_url: https://github.com/techuila/phonetech/blob/master/client/assets/js/vendor/guzzlehttp/guzzle/Dockerfile
+  detection_source: client/assets/js/vendor/guzzlehttp/guzzle/Dockerfile
   last_updated_by: Techuila
   last_updated_on: 2020-01-23 12:11:51.000000000 Z
 - name: Git
@@ -92,6 +100,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Version Control System
   image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/techuila/phonetech
   detection_source: Repo Metadata
 - name: PHPUnit
   description: Testing framework for PHP
@@ -103,8 +112,8 @@ tools:
   category: Build, Test, Deploy
   sub_category: Testing Frameworks
   image_url: https://img.stackshare.io/service/1616/1_WsEnddd5Y4EgEHsT054kUQ.jpeg
-  detection_source_url: client/assets/js/vendor/ocramius/package-versions/composer.lock
-  detection_source: server/vendor/zendframework/zend-diactoros/composer.json
+  detection_source_url: https://github.com/techuila/phonetech/blob/master/client/assets/js/vendor/ocramius/package-versions/composer.lock
+  detection_source: client/assets/js/vendor/guzzlehttp/guzzle/composer.json
   last_updated_by: Techuila
   last_updated_on: 2020-01-23 12:11:51.000000000 Z
 - name: PhpSpec
@@ -115,7 +124,8 @@ tools:
   category: Build, Test, Deploy
   sub_category: Testing Frameworks
   image_url: https://img.stackshare.io/service/3502/6b9dfb07681dee602dbdf75d9393f07c_400x400.png
-  detection_source: server/vendor/php-http/promise/composer.json
+  detection_source_url: https://github.com/techuila/phonetech/blob/master/client/assets/js/vendor/php-http/httplug/composer.json
+  detection_source: client/assets/js/vendor/php-http/httplug/composer.json
   last_updated_by: Techuila
   last_updated_on: 2020-01-23 12:11:51.000000000 Z
 - name: Travis CI
@@ -127,6 +137,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Continuous Integration
   image_url: https://img.stackshare.io/service/460/Lu6cGu0z_400x400.png
+  detection_source_url: https://github.com/techuila/phonetech/blob/master/server/vendor/lcobucci/jwt/.travis.yml
   detection_source: server/vendor/lcobucci/jwt/.travis.yml
   last_updated_by: Techuila
   last_updated_on: 2020-01-23 12:11:51.000000000 Z
